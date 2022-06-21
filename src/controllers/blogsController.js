@@ -1,3 +1,4 @@
+
 const blog = require('../models/blogModel');
 const jwt = require("jsonwebtoken");
 const blogModel = require('../models/blogModel');
@@ -52,7 +53,7 @@ const deletedBlog = async function (req, res) {
         let blog = await blogModel.findById({ _id: blogId, isDeleted: false, deletedAt: null })
         if (!blog) return res.status(404).send({ status: false, msg: "Blog Not Found" })
         console.log(blog)
-        res.status(200).send({status: true  msg: "Blg deleted Succesfully"})
+        res.status(200).send({status: true ,msg: "Blg deleted Succesfully"})
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
