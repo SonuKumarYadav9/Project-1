@@ -31,7 +31,7 @@ const createBlog = async function (req, res) {
 const getBlogs =  async function (req, res){
   let authorData =req.query.authorId
   let categoryData =req.query.subcategory
-  let tagsData = req.query.tag
+  let tagsData = req.query.tags
   let getBlogDetail = await blog.find({isdeleted:false, isPublished:true})
   if(!getBlogDetail) return res.status(404).send({Status:false, msg:"Document not found"})
   res.Status(200).send({Status:true, data: getBlogDetail})
@@ -39,31 +39,14 @@ const getBlogs =  async function (req, res){
   if(!queryBlog) return  res.status(404).send({Status:false, msg:"Document not found"})
   res.Status(200).send({Status:true, data:queryBlog})
 
-}
+};
 
 
 
 
 
-
-
-// const update = async function (req, res) {
-    
-//   let userId = req.params.userId;
-//   let user = await userModel.findById(userId);
-//   //Return an error if no user with the given id exists in the db
-//   if (!user) {
-//     return res.send("No such user exists");
-//   }
-
-//   let userData = req.body;
-//   let updatedUser = await userModel.findOneAndUpdate({ _id: userId }, userData);
-//   res.send({ status: updatedUser, data: updatedUser });
-// };
-
-
-// module.exports.createBlog = createBlog;
-// module.exports.getBlogs = getBlogs;
+module.exports.createBlog = createBlog;
+module.exports.getBlogs = getBlogs;
 
 
 
@@ -76,17 +59,11 @@ const getBlogs =  async function (req, res){
 
 
 
-// const blog = require('../models/blogModel');
-// // const jwt = require("jsonwebtoken");
 
-// const createBlog = async function(req, res) {
-//     try {
-//     let getBlogData = req.body;
-//     let savedBlogData = await blog.create(getBlogData);
-//     res.status(201).send({status: true, data: savedBlogData});
-//     } catch (err) {
-//         res.status(500).send({status: false, msg: err.message});
-//     }
-// };
 
-// module.exports.createBlog = createBlog;
+
+
+
+
+
+
