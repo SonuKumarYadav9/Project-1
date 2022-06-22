@@ -59,6 +59,27 @@ const deletedBlog = async function (req, res) {
     }
 };
 
+const getBlogs = async function(req, res) {
+
+    try {
+
+        let data = req.query;
+        let id = req.query._id
+        let filter = { $and: [{ isDeleted: false, isPublished: true,_id:id, ...data }] };
+         console.log(filter);
+        let blogsPresent = await blog.find(filter)
+
+        if (blogsPresent.length === 0) {
+            res.status(404).send({ msg: "No blogs is present" })
+        } else {
+            res.status(200).send({ status: true, data: blogsPresent })
+        }
+
+    } catch (err) {
+        res.status(500).send({ status: false, msg: err.message });
+    }
+}
+
 
 module.exports.createBlog = createBlog
 module.exports.getBooks = getBooks
