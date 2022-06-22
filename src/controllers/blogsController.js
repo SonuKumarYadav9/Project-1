@@ -48,12 +48,12 @@ const deletedBlog = async function (req, res) {
         let params = req.params          // reqest from params to blogId
         let blogId = params.blogId
         if (Object.keys(blogId).length == 0)
-            return res.status(400).send({ status: false, msg: "Blog Id Not Found" });
-        // find By ID blog is present or not
-        let blog = await blogModel.findById({ _id: blogId, isDeleted: false, deletedAt: null })
-        if (!blog) return res.status(404).send({ status: false, msg: "Blog Not Found" })
-        console.log(blog)
-        res.status(200).send({status: true ,msg: "Blg deleted Succesfully"})
+            return res.status(400).send({ status: false, msg: "Blog is required" });
+        //find By ID blog is present or not
+        let blogs = await blog.findOneAndUpdate({ _id: blogId, isDeleted: false, deletedAt: null, new : true})
+        if (!blogs) return res.status(404).send({ status: false, msg: "Blog Not Found" })
+        console.log(blogs)
+        res.status(200).send({status: true , msg:"Blog deleted Succesfully" ,blog })
     } catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
