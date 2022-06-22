@@ -1,5 +1,6 @@
 const author = require('../models/authorModel');
 // const jwt = require("jsonwebtoken");
+const validateEmail = require('email-validator');
 
 const createAuthor = async function(req, res) {
     try {
@@ -17,6 +18,8 @@ const createAuthor = async function(req, res) {
     if(email == 0) {
         return res.status(400).send({ status: false, msg: "Enter a valid email id"});
     }
+    if(!validateEmail.validate(req.body.email)) return res.status(400).send({ status: false, msg: "Enter a valid email "}); 
+    req.body.email = req.body.email.toLowerCase();
     let savedAuhorData = await author.create(getAuhorData);
     res.status(201).send({status: true, data: savedAuhorData});
     } catch (err) {
