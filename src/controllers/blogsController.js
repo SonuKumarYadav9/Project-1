@@ -26,21 +26,6 @@ const getBooks = async function (req, res) {
     }
 };
 
-//   const updatedBlog = async function (req,res){
-//        try {
-//          let blog = req.body
-//          let {title,body ,tags,subcategory} = blog
-
-
-//         //  if (!blog) return res.status(400).send ("Blog Not Found")
-
-
-//         //  let blog = await blogModel.findById(blogId)
-//        } catch (error) {
-
-//        }
-
-//   }
 
 ===============> UpdatedBlogs <=========================================
 
@@ -102,7 +87,27 @@ const deletedBlog = async function (req, res) {
         res.status(500).send({ status: false, msg: err.message });
     }
 };
-
+const deletedBlogQuery = async function (req, res) {
+    try {
+        let data1 = req.query         // reqest from params to blogId
+        let blogId = query.blogId
+        let filter ={...data1}
+         
+        // if (Object.keys(blogId).length == 0)
+        //     return res.status(400).send({ status: false, msg: "Blog is required" });
+        //find By ID blog is present or not
+        let blogs = await blog.find(filter)
+        // if (!blogs) return res.status(404).send({ status: false, msg: "Blog Not Found" })
+        console.log(blogs)
+        // res.status(200).send({status: true , msg:"Blog deleted Succesfully" ,blog })
+        let deletion = await blog.findOneAndUpdate(filter,{ $set:{ isDeleted: true ,deletedAt:Date.now() }})
+        console.log(deletion)
+            return res.status(200).send({ status: true, msg: "blog is deleted successfully",  deletedAt: Date.now()  })
+           
+    } catch (err) {
+        res.status(500).send({ status: false, msg: err.message });
+    }
+};
 
 module.exports.createBlog = createBlog
 module.exports.getBooks = getBooks
