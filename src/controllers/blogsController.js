@@ -42,6 +42,50 @@ const getBooks = async function (req, res) {
 
 //   }
 
+===============> UpdatedBlogs <=========================================
+
+const updatedBlogs = async function (req, res) {
+  try {
+    let blogId = req.params.blogId
+    let blogs = await blog.findById(blogId)
+    console.log(blogs)
+    if (!blogs) {
+      return res.status(404).send({ status: "false", msg: "No such blog exists " })
+    };
+    let isDelete = blogs.isDeleted;
+    if (isDelete == true) {
+      return res.status(200).send({ msg: true, data: "blog document is already deleted" })
+    }
+
+    let body = req.body
+    let published = blog.isPublished
+    console.log(published)
+    if (published == true && Object.keys(body) != 0) {
+
+      let result = await blog.findOneAndUpdate({ _id: blog._id }, body, { new: true })
+      console.log(result)
+      res.status(200).send({status: true, data: result })
+    }
+    else if (published == true && Object.keys(body) == 0) {
+      res.status(400).send({ msg: "already published" })
+    } else if (published == false && Object.keys(body) != 0) {
+      let result = await blog.findOneAndUpdate({ _id: blog._id }, {$set: {isDeleted: true}, publishedAt: Date.now() }, { new: true })
+      console.log(result)
+      res.send({ data: result })
+    } else {
+      let result = await blog.findOneAndUpdate({ _id: blog._id }, body, { new: true })
+      console.log(result)
+      res.status(200).send({status: true, data: result })
+    }
+  }
+  catch (err) {
+    console.log(err.message)
+    res.status(500).send({ msg: "error", error: err.message })
+  }
+}
+
+==========> DeeleteBlog <=======================
+
 // 51 to 53 line
 const deletedBlog = async function (req, res) {
     try {
@@ -58,27 +102,6 @@ const deletedBlog = async function (req, res) {
         res.status(500).send({ status: false, msg: err.message });
     }
 };
-
-const getBlogs = async function(req, res) {
-
-    try {
-
-        let data = req.query;
-        let id = req.query._id
-        let filter = { $and: [{ isDeleted: false, isPublished: true,_id:id, ...data }] };
-         console.log(filter);
-        let blogsPresent = await blog.find(filter)
-
-        if (blogsPresent.length === 0) {
-            res.status(404).send({ msg: "No blogs is present" })
-        } else {
-            res.status(200).send({ status: true, data: blogsPresent })
-        }
-
-    } catch (err) {
-        res.status(500).send({ status: false, msg: err.message });
-    }
-}
 
 
 module.exports.createBlog = createBlog
