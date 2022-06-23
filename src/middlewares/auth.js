@@ -23,4 +23,24 @@ const authentication = async function (req, res, next) {
     }
 };
 
+const authorization = async(req, res, next) => {
+    try {
+        let token = req.headers["x-api-key"];
+        
+        if(!token) return res.status(404).send({ status:false, msg: "token must be present "});
+
+        let decordedToken = jwt.verify(token, "functionUp-project1");
+        if(!decordedToken) return res.status(404).send({ status: false, msg: "token is not valid"});
+        let authorToBeModified = re.params.authorId;
+        let authorLoggedIn = decordedToken.authorId;
+        if(authorToBeModified != authorLoggedIn) {
+            return res.status(404).send({ status: false, msg: "user logged is not allowed to modify the requested authors data"})
+        }
+        next();
+    } catch(err) {
+        return res.status(500).send({ status: false, msg: err.message });
+    }
+};
+
+module.exports.authorization = authorization;
 module.exports.authentication = authentication;
