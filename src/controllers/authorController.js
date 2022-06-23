@@ -59,6 +59,8 @@ let loginAuthor = async function (req,res) {
         res.status(500).send({ msg: "Error", msg: err.message })
     }  
 };
+
+
 const authorAuthentication = async function (req, res) {
     try {    ///// check token 
         let token = req.headers["x-api-key"]
