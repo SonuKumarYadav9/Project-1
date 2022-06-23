@@ -56,9 +56,9 @@ let loginAuthor = async function (req,res) {
         res.status(500).send({ msg: "Error", msg: err.message })
     }  
 };
-const authorAuthentication = async function (req, res) {
-    try {    ///// check token 
-        let token = req.headers[x-api-key, token]
+  try {    ///// check token 
+        let token = req.headers["x-api-key"]
+        if (!token) req.headers["x-api-key"]
         if (!token) return res.status(404).send({ status: false, msg: "Token Must be Filled" })
         console.log(token)
         // verify token
@@ -74,6 +74,6 @@ const authorAuthentication = async function (req, res) {
     catch (err) {
         res.status(500).send({ status: false, msg: err.message });
     }
-}
+};
 module.exports.loginAuthor = loginAuthor;
 module.exports.createAuthor = createAuthor;
