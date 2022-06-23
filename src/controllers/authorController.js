@@ -20,7 +20,7 @@ const createAuthor = async function(req, res) {
     }
     if(!validateEmail.validate(req.body.email)) return res.status(400).send({ status: false, msg: "Enter a valid email "}); 
     req.body.email = req.body.email.toLowerCase();
-    if(!password == 0) {
+    if(password == 0) {
         return res.status(400).send({ status: false, msg: "Enter a valid password"});
     }                                 
     let savedAuhorData = await author.create(getAuhorData);
