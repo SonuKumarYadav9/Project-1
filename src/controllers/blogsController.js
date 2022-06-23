@@ -117,7 +117,7 @@ let deletedByQueryParams = async function (req, res) {
     if (data) {
       let deletedBlogsFinal = await blog.updateMany(
         { $in: data },
-        { $set: { isDeleted: false }, deletedAt: Date.now() },
+        { $set: { isDeleted: true }, deletedAt: Date.now() },
         { new: true }
       );
       
