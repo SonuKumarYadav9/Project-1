@@ -29,8 +29,8 @@ const createAuthor = async function(req, res) {
 
 let loginAuthor = async function (req,res) {
     try {
-        let email = req.body.email;
-        let password = req.body.password;
+        let email = req.heders.email;
+        let password = req.headers.password;
 
         // if(!email) return res.status(400).send({status: false, msg: 'please provide valid email id'});
 
@@ -43,7 +43,7 @@ let loginAuthor = async function (req,res) {
 
     let token = jwt.sign(
         {
-            authorId: author._id.toString(),
+            authorId: author._id,
             project: 1,
             group: "group-2",
         },
