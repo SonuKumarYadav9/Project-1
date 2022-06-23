@@ -20,6 +20,9 @@ const createAuthor = async function(req, res) {
     }
     if(!validateEmail.validate(req.body.email)) return res.status(400).send({ status: false, msg: "Enter a valid email "}); 
     req.body.email = req.body.email.toLowerCase();
+    if(!password == 0) {
+        return res.status(400).send({ status: false, msg: "Enter a valid password"});
+    }                                 
     let savedAuhorData = await author.create(getAuhorData);
     res.status(201).send({status: true, data: savedAuhorData});
     } catch (err) {
@@ -36,8 +39,8 @@ let loginAuthor = async function (req,res) {
 
         // if(!password) return res.status(400).send({status: false, msg: 'please provide valid password'})
 
-        let user = await author.findOne({ email: email, password: password });
-        if(!user) return res.send({
+        let authors = await author.findOne({ email: email, password: password });
+        if(!authors) return res.send({
         status: false, msg: "email or the password is not correct",
     });
 
