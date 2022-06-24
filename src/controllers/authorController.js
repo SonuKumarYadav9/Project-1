@@ -5,7 +5,7 @@ const validateEmail = require('email-validator');
 const createAuthor = async function(req, res) {
     try {
     let getAuhorData = req.body;
-    let {fName, lName, title, email} = getAuhorData;
+    let {fName, lName, title, email, password} = getAuhorData;
     if(fName == 0) {
         return res.status(400).send({status: false, msg: "Enter authors First Name"});
     }
