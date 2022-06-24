@@ -31,7 +31,7 @@ const authorization = async(req, res, next) => {
 
         let decordedToken = jwt.verify(token, "functionUp-project1");
         if(!decordedToken) return res.status(404).send({ status: false, msg: "token is not valid"});
-        let authorToBeModified = re.params.authorId;
+        let authorToBeModified = res.params.authorId;
         let authorLoggedIn = decordedToken.authorId;
         if(authorToBeModified != authorLoggedIn) {
             return res.status(404).send({ status: false, msg: "user logged is not allowed to modify the requested authors data"})
