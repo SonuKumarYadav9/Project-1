@@ -2,15 +2,28 @@ const express = require('express');
 const router = express.Router();
 const authorController = require("../controllers/authorController");
 const blogController = require("../controllers/blogsController");
+const middleware = require("../middlewares/auth")
 
-router.get("/test-me", function (req, res) {
-    res.send("My first ever Api to Check Working Or Not !")
-})
+let { authentication, authorization } = middleware;
+// ---------- Create Author Api ---------
+router.post("/createAuthor", authorController.createAuthor); 
 
-router.post("/createAuthor", authorController.createAuthor);
+// ---------- Create Blog Api ------------ 
+router.post("/createBlog",blogController.createBlog);  
 
-router.post("/createBlog", blogController.createBlog);
+// ---------- Login Author Api -----------
+router.post("/login", authorController.loginAuthor);
 
-router.delete("/blogs:blogId", blogController.deletedBlog);
+// ---------- Get Blogs Api -------------
+router.get("/getBlogs",authentication,blogController.getBlogs);  
 
-module.exports = router;
+// ------- Get Updated Blogs using blogId ------
+router.put("/getBlogs/:blogId", authorization ,blogController.updatedBlogs);
+
+// ---------- Delete Api ---------------
+router.delete("/blogs/:blogId", authorization,blogController.deletedBlog);
+
+// ---------- Delete Blogs By Query ----------
+router.delete("/blogs",authorization, blogController.deletedByQueryParams);
+
+module.exports = router; 
